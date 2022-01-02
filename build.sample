@@ -1,0 +1,54 @@
+#!/bin/bash
+
+build_name='fox-powerdns'
+build_repos='<build-repos-name>'
+
+
+while getopts "b:dph" opt; do
+    case $opt in
+    d) DRY=1;;
+    p) PUSH=1;;
+    b) branch="${OPTARG}";; 
+    h) echo "Usage:
+# -d - dry-run (only prepare, not build)
+# -p - push (build, tag but no push.
+# -b - branch
+# -t - target
+";exit;;
+    esac
+done
+
+if [ ! -f last_version ]
+then
+    if [ ! -f init_version ]
+    then
+        echo "init_version not found!"
+    exit
+    fi
+    cp init_version last_version
+fi
+
+build_version=`cat last_version`
+
+(( build_version++ ))
+echo "Building image ${build_name}:$branch-$build_version";
+
+if [ -n "$DRY" ]
+then
+    echo DRY-RUN Selected. Build disabled
+    exit;
+fi
+
+push_suffix='--output=type=local,dest=./images'
+
+if [ -n "$PUSH" ]
+then
+    push_suffix='--push'
+fi
+
+(( build_version++ ))
+
+docker buildx build --platform linux/arm,linux/arm64,linux/amd64 --tag=${build_repos}/${build_name}:${build_version} --tag ${build_repos}/${build_name}:latest . ${push_suffix}
+
+echo ${build_version} > last_version
+
