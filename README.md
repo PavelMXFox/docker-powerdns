@@ -1,10 +1,4 @@
 # PowerDNS Docker Container
-
-[![Image Size](https://images.microbadger.com/badges/image/psitrax/powerdns.svg)](https://microbadger.com/images/psitrax/powerdns)
-[![Docker Stars](https://img.shields.io/docker/stars/psitrax/powerdns.svg)](https://hub.docker.com/r/psitrax/powerdns/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/psitrax/powerdns.svg)](https://hub.docker.com/r/psitrax/powerdns/)
-[![Docker Automated buil](https://img.shields.io/docker/automated/psitrax/powerdns.svg)](https://hub.docker.com/r/psitrax/powerdns/)
-
 * Small Alpine based Image
 * MySQL (default), Postgres, SQLite and Bind backend included
 * DNSSEC support optional
@@ -15,11 +9,7 @@
 
 ## Supported tags
 
-* Exact: i.e. `v4.4.1`: PowerDNS Version 4.4.1
-* `v4.0`: PowerDNS Version 4.0.x, latest image build
-* `v4`: PowerDNS Version 4.x.x, latest image build
-
-Note: Some older tags don't have the `v` at the beginning (e.g. for Version 4.1.7 the tag is `4.1.7`)
+* 1010 - `4.5.1`
 
 ## Usage
 
@@ -45,6 +35,8 @@ $ docker run --name pdns \
 
 ## Configuration
 
+If container start with no configuration it automatically initialize it from template and env vars. If config exists it never be changed by image and can be edited by customer.
+
 **Environment Configuration:**
 
 * MySQL connection settings
@@ -57,6 +49,8 @@ $ docker run --name pdns \
 * Want to disable mysql initialization? Use `MYSQL_AUTOCONF=false`
 * DNSSEC is disabled by default, to enable use `MYSQL_DNSSEC=yes`
 * Want to use own config files? Mount a Volume to `/etc/pdns/conf.d` or simply overwrite `/etc/pdns/pdns.conf`
+* WEBSERVER_PASSWORD
+* API_KEY
 
 **PowerDNS Configuration:**
 
@@ -70,10 +64,9 @@ See `docker run --rm psitrax/powerdns --help`
 
 
 ## Maintainer
-
-* Christoph Wiechert <wio@psitrax.de>
+* Pavel Dmitriev <palkan@mx-s.net>
 
 ### Credits
-
+* Christoph Wiechert <wio@psitrax.de>
 * Mathias Kaufmann <me@stei.gr>: Reduced image size
 
